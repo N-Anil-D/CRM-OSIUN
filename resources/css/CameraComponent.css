@@ -1,0 +1,106 @@
+.shutter-button {
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    background-color: whitesmoke;
+    border: none;
+    position: relative;
+    bottom: 80px;
+    left: 50%;
+    transform: translateX(-50%);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    cursor: pointer;
+}
+.check-button {
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    background-color: greenyellow;
+    border: red;
+    position: relative;
+    bottom: 80px;
+    left: 90%;
+    transform: translateX(-50%);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    cursor: pointer;
+}
+.btn-camera-hide {
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    background-color: red;
+    border: red;
+    position: absolute;
+    bottom: 92%;
+    left: 95%;
+    transform: translateX(-50%);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    cursor: pointer;
+}
+.photo-gallery {
+    display: flex;
+    flex-wrap: wrap;
+    margin-top: 20px;
+}
+
+.gallery-button-container {
+    margin-top: 20px;
+    border: whitesmoke;
+    text-align: center;
+    width: 100px;
+    height: 100px;
+    bottom: 80px;
+    left: 10%;
+    position: absolute;
+    transform: translateX(-50%);
+    cursor: pointer;
+    object-fit: contain;
+}
+
+.photo-thumbnail {
+    width: 100px;
+    height: 100px;
+    object-fit: contain;
+    margin: 5px;
+    cursor: pointer;
+}
+
+
+.file-gallery {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+}
+
+.file-container {
+    margin: 10px;
+    text-align: center;
+}
+
+.file-thumbnail {
+    width: 200px;
+    height: 200px;
+    object-fit: contain; /* Maintains aspect ratio and fits within the container */
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    background-color: #fff;
+}
+
+.file-preview {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.file-embed {
+    width: 100%;
+    height: 300px;
+    border: none;
+}
+
+.file-link {
+    display: block;
+    margin-top: 10px;
+    color: blue;
+    text-decoration: underline;
+}

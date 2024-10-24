@@ -1,0 +1,49 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@keyframes rainbow {
+    0% { border-color: #f00; }
+    16.666% { border-color: #ff0; }
+    33.333% { border-color: #0f0; }
+    50% { border-color: #0ff; }
+    66.666% { border-color: #00f; }
+    83.333% { border-color: #f0f; }
+    100% { border-color: #f00; }
+  }
+
+  .border-rainbow {
+    animation: rainbow 8s linear infinite alternate;
+  }
+
+
+.new-ticket {
+    background-color: rgba(255,161,51,0.25) !important;
+}
+
+.ag-theme-quartz {
+    --ag-foreground-color: black !important;
+    --ag-font-size: 17px;
+    --ag-font-family: monospace;
+
+    a {
+        color: black !important;
+    }
+
+    p {
+        color: black !important;
+    }
+}
+
+.login-back-image {
+    background-image: url("../../img/LoginBg.jpeg");
+    background-blend-mode: luminosity;
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+}
+
+.log-logo {
+    width: 200px;
+    margin-top: 100px;
+}

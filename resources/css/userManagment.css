@@ -1,0 +1,55 @@
+.expanded-row .ant-table-cell {
+    background-color: #c885f1; /* Daha açık renk */
+}
+
+.expanded-row:hover .ant-table-cell {
+    background-color: #a34ee8; /* Hover rengi */
+    color: #fff;
+}
+
+.expanded-row-even {
+    background-color: #c885f1; /* Gri arka plan */
+}
+
+.expanded-row-odd {
+    background-color: #a34ee8; /* Hafif mavi arka plan */
+}
+
+.parent-row {
+    font-weight: bold; /* Ana satırları kalın yapar */
+}
+
+.child-row {
+    padding-left: 20px; /* Alt satırları içeri kaydırır */
+}
+
+.ant-table-row-level-1.expanded-row-odd {
+    background-color: #ebd2fd !important;
+    transition: all 0.3s ease !important;
+    box-sizing: border-box !important;
+}
+
+.ant-table-row-level-1.expanded-row-even {
+    background-color: #d9adf8 !important;
+    transition: all 0.3s ease !important;
+    box-sizing: border-box !important;
+}
+
+.ant-table-row-level-1:hover {
+    background-color: #be85ec !important;
+    border: 2px solid #6700ff !important;
+    margin: -2px !important;
+    position: relative !important;
+}
+
+/* Ana satırlar için */
+.ant-table-row-level-0:nth-child(odd) {
+    background-color: #ffffff !important;
+}
+
+.ant-table-row-level-0:nth-child(even) {
+    background-color: #eaeaea !important;
+}
+.ant-table-row-level-0:hover {
+    background-color: #ec8fdb !important;
+}

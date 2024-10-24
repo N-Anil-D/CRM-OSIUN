@@ -1,0 +1,73 @@
+<IfModule mod_rewrite.c>
+
+    <IfModule mod_negotiation.c>
+
+        Options -MultiViews -Indexes
+
+    </IfModule>
+
+
+
+    RewriteEngine On
+
+
+
+    # Handle Authorization Header
+
+    RewriteCond %{HTTP:Authorization} .
+
+    RewriteRule .* - [E=HTTP_AUTHORIZATION:%{HTTP:Authorization}]
+
+
+
+    # Redirect Trailing Slashes If Not A Folder...
+
+    RewriteCond %{REQUEST_FILENAME} !-d
+
+    RewriteCond %{REQUEST_URI} (.+)/$
+
+    RewriteRule ^ %1 [L,R=301]
+
+	RewriteRule ^css/(.*)$ public/css/$1 [L]
+
+	RewriteRule ^fonts/(.*)$ public/fonts/$1 [L]
+
+	RewriteRule ^img/(.*)$ public/img/$1 [L]
+
+	RewriteRule ^build/(.*)$ public/build/$1 [L]
+
+	RewriteRule ^uploads/(.*)$ public/uploads/$1 [L]
+
+	RewriteRule ^i18n/(.*)$ public/i18n/$1 [L]
+
+	RewriteRule ^icons/(.*)$ public/icons/$1 [L]
+
+	RewriteRule ^scss/(.*)$ public/scss/$1 [L]
+
+	RewriteRule ^webfonts/(.*)$ public/webfonts/$1 [L]
+
+	RewriteRule ^storage/(.*)$ public/storage/$1 [L]
+
+	RewriteRule ^resources/(.*)$ resources/$1 [L]
+	RewriteRule ^node_modules/(.*)$ node_modules/$1 [L]
+
+	RewriteCond %{REQUEST_FILENAME} !-f
+	RewriteCond %{REQUEST_FILENAME} !-d
+	RewriteRule ^(.*)$ public/index.php [L]
+
+
+    # Send Requests To Front Controller...
+
+    RewriteCond %{REQUEST_FILENAME} !-d
+
+    RewriteCond %{REQUEST_FILENAME} !-f
+
+    RewriteRule ^ index.php [L]
+
+	DirectoryIndex /public/index.php
+
+    Options Indexes FollowSymLinks
+    AllowOverride All
+	Require all granted
+
+</IfModule>

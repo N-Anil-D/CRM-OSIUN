@@ -1,0 +1,11 @@
+import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
+import { Head, Link } from '@inertiajs/react';
+import { PageProps } from '@/types';
+import React, { useState, useEffect, useRef } from 'react';
+import axios from 'axios';
+import TicketModelPopup from '@/Layouts/TicketModelPopup';
+import DeleteModal from '@/Layouts/DeleteModal';
+import TicketFilter from '@/Layouts/TicketFilter';
+import { Table } from "antd";
+import Select from 'react-select';
+import moment from 'moment';
