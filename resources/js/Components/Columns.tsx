@@ -2,13 +2,15 @@ import {
     BuildingProps,
     CustomerProps,
     TicketsDataProps,
-    clientsContactPerson,
-    RouteAuths, RoomProps, CustomerAsignedRoomsDataProps,
+    RouteAuths,
+    // clientsContactPerson,
+    // RoomProps,
+    // CustomerAsignedRoomsDataProps,
 } from "@/types/globalProps";
 import React, {useState} from 'react';
 import moment from 'moment';
 import {Head, Link} from '@inertiajs/react';
-import {Table} from 'antd';
+// import {Table} from 'antd';
 import type {ColumnsType} from 'antd/es/table';
 import {XCircle, CheckCircle, Filter} from 'react-feather';
 import {ICellRendererParams, ColDef, ValueGetterParams} from 'ag-grid-community';
@@ -898,23 +900,19 @@ export function medewerkersColumnsCreator(
 ): ColDef[] {
     const columns: ColDef[] = [
         {
-            headerName: "Pers. nr.",
+            headerName: "ID",
             flex: 1,
             valueGetter: (params: ValueGetterParams) => {
                 return `${params.data.personnel_number}`;
             },
             cellRenderer: (params: ICellRendererParams) => {
-                return (
-                    <a href={`/medewerker/${params.data.id}`}>
-                        <p>{params.data.personnel_number}</p>
-                    </a>
-                );
+                return (<b>{params.data.personnel_number}</b>)
             },
             filter: true, floatingFilter: true
         },
         {
-            headerName: "Naam",
-            flex: 2,
+            headerName: "Name",
+            flex: 3,
             valueGetter: (params: ValueGetterParams) => {
                 return `${params.data.first_name}  ${params.data.tussen} ${params.data.tussen} ${params.data.last_name}`
             },
@@ -928,29 +926,35 @@ export function medewerkersColumnsCreator(
             filter: true, floatingFilter: true
         },
         {
-            headerName: "e-Mailadres",
-            flex: 2,
+            headerName: "Email",
+            flex: 3,
             valueGetter: (params: ValueGetterParams) => params.data.email,
             cellRenderer: (params: ICellRendererParams) => {
-                return (<p>{params.data.email}</p>)
+                // return (<p>{params.data.email}</p>)
+                return (
+                    <a href={`/medewerker/${params.data.id}`}>
+                        <p>{params.data.email}</p>
+                    </a>
+                );
+
             },
             filter: true, floatingFilter: true
         },
         {
-            headerName: "Geboortedatum",
+            headerName: "Created At",
             flex: 2,
             valueGetter: (params: ValueGetterParams) => moment(params.data.date_of_birth).format('DD-MM-YYYY'),
             cellRenderer: (params: ICellRendererParams) =>
-                <p>{moment(params.data.date_of_birth).format('DD-MM-YYYY')}</p>,
-            filter: true, floatingFilter: true
+                <p>{moment(params.data.created_at).format('DD-MM-YYYY')}</p>,
+            // filter: true, floatingFilter: true
         },
-        {
-            headerName: "Geslacht",
-            flex: 2,
-            valueGetter: (params: ValueGetterParams) => params.data.gender,
-            cellRenderer: (params: ICellRendererParams) => <p>{params.data.gender}</p>,
-            filter: true, floatingFilter: true
-        },
+        // {
+        //     headerName: "Geslacht",
+        //     flex: 2,
+        //     valueGetter: (params: ValueGetterParams) => params.data.gender,
+        //     cellRenderer: (params: ICellRendererParams) => <p>{params.data.gender}</p>,
+        //     filter: true, floatingFilter: true
+        // },
         {
             headerName: "Status",
             flex: 1,
@@ -965,20 +969,20 @@ export function medewerkersColumnsCreator(
             ),
             filter: true, floatingFilter: true
         },
+        // {
+        //     headerName: "Account",
+        //     flex: 1,
+        //     valueGetter: (params: ValueGetterParams) => params.data.is_user ? "Ja" : 'Nee',
+        //     cellRenderer: (params: ICellRendererParams) => (
+        //         <div className="dropdown action-label  mt-2">
+        //             {params.data.is_user ? <CheckCircle className={'text-green-700 mt-2'} size={20}/> :
+        //                 <XCircle className={'text-red-700 mt-2'} size={20}/>}
+        //         </div>
+        //     ),
+        //     filter: true, floatingFilter: true
+        // },
         {
-            headerName: "Account",
-            flex: 1,
-            valueGetter: (params: ValueGetterParams) => params.data.is_user ? "Ja" : 'Nee',
-            cellRenderer: (params: ICellRendererParams) => (
-                <div className="dropdown action-label  mt-2">
-                    {params.data.is_user ? <CheckCircle className={'text-green-700 mt-2'} size={20}/> :
-                        <XCircle className={'text-red-700 mt-2'} size={20}/>}
-                </div>
-            ),
-            filter: true, floatingFilter: true
-        },
-        {
-            headerName: "Actie",
+            headerName: "Action",
             flex: 1,
             cellRenderer: (params: ICellRendererParams) => {
                 const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
@@ -1270,6 +1274,7 @@ export function asignedCustomersColumnsCreator(
     ];
     return columns;
 }
+
 export function clientProjectColumnsCreator(
     handleDeleteClick: (record: CustomerProps) => void,
     handleUpdateClick: (record: CustomerProps) => void,
@@ -1482,4 +1487,5 @@ export const permitionsTableColumns = (
         },
     ];
 };
+
 export default {TicketColumCreator, rowClassName, permitionsTableColumns};

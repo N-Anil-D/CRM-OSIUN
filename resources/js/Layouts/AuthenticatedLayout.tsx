@@ -86,7 +86,7 @@ const NotificationComponent: React.FC<{
     const MySwal = withReactContent(Swal);
     const {channel} = useChannel(`notification:${userID}`, (message: any) => {
         try {
-            console.log('channel recived', message);
+            // console.log('channel recived', message);
             if (message.data.ticket) {
                 let newTicket = message.data.ticket as TicketsDataProps;
                 if (isTicketTableActive) {
@@ -115,7 +115,7 @@ const NotificationComponent: React.FC<{
                 channel.unsubscribe(`notification:${userID}`);
             };
         } catch (e) {
-            console.log('Bildirim sisteminde bir hata oluştu' + e)
+            // console.log('Bildirim sisteminde bir hata oluştu' + e)
         }
     });
 
@@ -303,32 +303,32 @@ export default function Authenticated({
             navigator.serviceWorker
                 .register('/service-worker.js')
                 .then(registration => {
-                    console.log('Service Worker registered successfully:', registration);
+                    // console.log('Service Worker registered successfully:', registration);
                 })
                 .catch(error => {
-                    console.error('Service Worker registration failed:', error);
+                    // console.error('Service Worker registration failed:', error);
                 });
             const registration = await navigator.serviceWorker.ready;
             const existingSubscription = await registration.pushManager.getSubscription();
             const applicationServerKey = urlBase64ToUint8Array('BJVL77Cl3JRvxeqohUl2Ze1UWIQUtaa6h0XtORH1aONBuMjLIg3i9fyH6-YeLTeOTrzeRMp8bbjsWyKF2io0gnA');
 
             if (!existingSubscription) {
-                console.log('sub yazılıyor...')
+                // console.log('sub yazılıyor...')
                 const newSubscription = await registration.pushManager.subscribe({
                     userVisibleOnly: true,
                     applicationServerKey: applicationServerKey,
                 });
                 axios.post('/subscribe', newSubscription)
                     .then(response => {
-                        console.log('Abonelik başarılı:', response);
+                        // console.log('Abonelik başarılı:', response);
                     })
                     .catch(error => {
-                        console.error('Abonelik hatası:', error);
+                        // console.error('Abonelik hatası:', error);
                     });
             } else {
-                console.log('Mevcut abonelik iptal ediliyor...');
+                // console.log('Mevcut abonelik iptal ediliyor...');
                 await existingSubscription.unsubscribe();
-                console.log('Abonelik iptal edildi, yeni abonelik oluşturulacak...');
+                // console.log('Abonelik iptal edildi, yeni abonelik oluşturulacak...');
                 subscribeUserToPush();
             }
             5
@@ -344,7 +344,7 @@ export default function Authenticated({
         setSidebarExpanded(!isSidebarExpanded);
     };
     const onSidebarHideClick = () => {
-        console.log('sidebar Clicked', document.body.classList)
+        // console.log('sidebar Clicked', document.body.classList)
         document.body.classList.toggle("mini-sidebar");
         document.body.classList.toggle("slide-nav");
         setSidebarExpanded(!isSidebarExpanded);

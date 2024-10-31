@@ -68,7 +68,7 @@ const DeleteUser: React.FC<DeleteProps> = ({editableUser, onHide, showBannUser})
 }
 const UpUser: React.FC<upProps> = ({showUserEdit, onHide, editableUser, clients, buildings}) => {
     useEffect(() => {
-        console.log(editableUser);
+        // console.log(editableUser);
     }, [editableUser]);
     return (<>
         <Modal show={showUserEdit} onHide={onHide} centered size={'xl'} animation={true}>

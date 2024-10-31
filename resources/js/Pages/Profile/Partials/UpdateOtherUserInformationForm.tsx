@@ -55,20 +55,21 @@ function mergePermissions(
 }
 
 export default function UpdateOtherUserInformation({
-                                                       mustVerifyEmail,
-                                                       status,
-                                                       className = '',
-                                                       user,
-                                                       buildings,
-                                                       clients
-                                                   }: {
-    mustVerifyEmail: boolean,
-    status?: string,
-    className?: string,
-    user: User,
-    buildings: BuildingProps[],
-    clients: CustomerProps[]
-}) {
+        mustVerifyEmail,
+        status,
+        className = '',
+        user,
+        buildings,
+        clients
+    }: {
+        mustVerifyEmail: boolean,
+        status?: string,
+        className?: string,
+        user: User,
+        buildings: BuildingProps[],
+        clients: CustomerProps[]
+    })
+    {
     const [authsData, setAuthsData] = useState<RouteAuths[]>(permitablePageList);
     const [clientVaules, selClientValues] = useState<{ value: string, label: string }[] | null>(null);
     const [locationValues, setLocationValues] = useState<{ value: string, label: string }[] | null>(null);
@@ -102,8 +103,8 @@ export default function UpdateOtherUserInformation({
             setAuthsData(mergePermissions(permitablePageList(), user.permissions));
             setData('permissions', authsData);
         }
-        console.log('user.permissions',user.permissions);
-        console.log('authsDAta', authsData);
+        // console.log('user.permissions',user.permissions);
+        // console.log('authsDAta', authsData);
         if (user.connectedCustomer === 'ALL') {
             selClientValues([{value: 'ALL', label: 'All'}]);
             setData(previousData => ({
@@ -182,21 +183,21 @@ export default function UpdateOtherUserInformation({
         label: 'Active'
     })
     useEffect(() => {
-        console.log(data);
+        // console.log(data);
     }, [data]);
     const submit: React.FormEventHandler = (e) => {
         e.preventDefault();
         patch(route('profile.update.other'), {
             preserveScroll: true,
             onSuccess: () => {
-                setToast({message: 'Profil başarıyla güncellendi!', type: 'success'});
+                // setToast({message: 'Profil başarıyla güncellendi!', type: 'success'});
                 setTimeout(() => {
                     window.location.reload();
                 }, 1000); // Mesaj gösterildikten sonra 1 saniye bekleyip sayfayı yeniler
             },
             onError: (err) => {
                 const errorMessage = err?.message || 'Bir hata oluştu!'; // Eğer JSON mesaj varsa burada gösteririz
-                setToast({message: errorMessage, type: 'error'});
+                // setToast({message: errorMessage, type: 'error'});
             },
         });
     };
@@ -495,7 +496,7 @@ function UpdateContactPersonUserInformation({
         willclients: user.customers?.map(x => ({value: x.CustomerID, label: x.Unvan})),
     });
     useEffect(() => {
-        console.log(data);
+        // console.log(data);
     }, [data]);
     const submit: React.FormEventHandler = (e) => {
         e.preventDefault();

@@ -78,7 +78,12 @@ class UserBoradController extends Controller
         }
         $clients = Customers::all();
         $buildings = Buildings::all();
-        return Inertia::render('UsersManager', ['kullanicilar' => $usersPrev, 'clients' => $clients, 'buildings' => $buildings]);
+        dd($usersPrev);
+        return Inertia::render('UsersManager', [
+            'kullanicilar' => $usersPrev,
+            'clients' => $clients,
+            'buildings' => $buildings
+        ]);
     }
 
     public function storenewuser(Request $request)

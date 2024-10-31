@@ -14,6 +14,7 @@ import 'bootstrap/dist/js/bootstrap.bundle.min.js';
 import IconButton from '@mui/material/IconButton';
 import Menu from '@mui/material/Menu';
 import MenuItem from '@mui/material/MenuItem';
+import Swal from 'sweetalert2';
 
 interface dataProps extends PageProps {
     kullanicilar: User[];
@@ -37,6 +38,22 @@ export default function UsersManager({auth, kullanicilar, clients, buildings}: d
     const [editableUser, setEditableUser] = useState<User>(auth.user);
     const [showBannUser, setShowBannUser] = useState<boolean>(false);
     const [routes, setRoutes] = useState<Route[]>([]);
+    
+    // const Toast = Swal.mixin({
+    //     toast: true,
+    //     position: "top-end",
+    //     showConfirmButton: false,
+    //     timer: 1500,
+    //     timerProgressBar: true,
+    //     didOpen: (toast) => {
+    //         toast.onmouseenter = Swal.stopTimer;
+    //         toast.onmouseleave = Swal.resumeTimer;
+    //     },
+    //     didClose:()=>{
+    //         // 
+    //     }
+    // });
+    
     useEffect(() => {
     }, []);
     const handleTabClick = (menu: MenuProps) => {
@@ -46,8 +63,14 @@ export default function UsersManager({auth, kullanicilar, clients, buildings}: d
         const chosenUser = kullanicilar.find(z => z.id === userid) ?? auth.user
         setEditableUser(chosenUser);
 
-        if (auth.user === editableUser) alert('kendini silemezsin...');
-        else setShowBannUser(true);
+        if (auth.user === editableUser){
+            // Toast.fire({
+            //     icon: "error",
+            //     text: "UNAUTHORIZED",
+            // });
+        }else {
+            setShowBannUser(true);
+        }
     };
     const handleUpdateClick = (userid: number) => {
         setEditableUser(kullanicilar.find(z => z.id === userid) ?? auth.user);
