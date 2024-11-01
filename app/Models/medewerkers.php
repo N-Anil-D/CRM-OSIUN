@@ -3,10 +3,13 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\{Model,SoftDeletes};
 
 class medewerkers extends Model
 {
+    use SoftDeletes; 
+    use HasFactory;
+
     protected $tablename = "medewerkers";
     protected $fillable = [
         'title',
@@ -25,7 +28,6 @@ class medewerkers extends Model
         'employment_type',
         'contract_type',
         'proeftijd',
-        'personnel_number',
         'iban_number',
         'start_date',
         'travel_allowance',
@@ -37,5 +39,4 @@ class medewerkers extends Model
         'travel_expenses',
         'bonus_amount',
     ];
-    use HasFactory;
 }

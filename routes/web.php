@@ -114,6 +114,7 @@ Route::middleware(['auth', 'verified', CheckRole::class])->group(function () {
     Route::get('/medewerker/{id}',                                          [MedewerkersController::class, 'detailindex'])->name('medewerker');
     Route::post('/api/medewerkers/store',                                   [MedewerkersController::class, 'store'])->name('medewerkers.store');
     Route::post('/api/medewerkers/update',                                  [MedewerkersController::class, 'update'])->name('medewerkers.update');
+    Route::post('/medewerkers/delete/{id}',                                 [MedewerkersController::class, 'delete'])->name('medewerkers.delete');
 
     Route::post('/api/getlocationsasignedrooms',                            [RoomAsigneControlles::class, 'getlocationsasignedrooms'])->name('getasignedrooms');
     Route::post('/api/asignclientrooms',                                    [RoomAsigneControlles::class, 'asignClientRooms'])->name('asignClientRoom');

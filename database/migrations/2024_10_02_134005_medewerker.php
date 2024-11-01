@@ -30,7 +30,6 @@ return new class extends Migration {
                 $table->string('employment_type', 50)->default('ZZP'); // Çalışma durumu: Serbest meslek vs.
                 $table->string('contract_type', 50)->nullable();
                 $table->timestamp('proeftijd')->nullable();
-                $table->integer('personnel_number')->unique();
                 $table->string('iban_number')->nullable();
                 $table->timestamp('start_date')->nullable();
                 $table->string('travel_allowance', 50)->nullable();
@@ -42,6 +41,7 @@ return new class extends Migration {
                 $table->decimal('travel_expenses', 8, 2)->default(0.00);
                 $table->decimal('bonus_amount', 8, 2)->default(0.00);
                 $table->timestamps();
+                $table->softDeletes();
             });
     }
 

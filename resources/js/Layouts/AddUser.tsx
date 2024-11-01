@@ -1,5 +1,5 @@
 import React, {FormEventHandler, useEffect, useRef, useState} from 'react'
-import {Head, Link, useForm} from '@inertiajs/react';
+import {Head, Link, useForm, router} from '@inertiajs/react';
 import axios from "axios";
 import Select, {GroupBase, SelectInstance} from 'react-select';
 import PasswordComponent from "@/Components/PasswordComponent";
@@ -12,6 +12,9 @@ import {Table} from "antd";
 import {permitionsTableColumns} from '@/Components/Columns';
 import {permitablePageList} from '@/types/PagePermitions';
 import PermissionsTable from '@/Components/PermissionsTable';
+import Swal from 'sweetalert2';
+
+
 interface newUserProps extends User {
     password: string;
 }
@@ -36,31 +39,66 @@ interface DeleteProps {
     onHide: () => void;
     editableUser: User;
 }
+const Toast = Swal.mixin({
+    toast: true,
+    position: "top-end",
+    showConfirmButton: false,
+    timer: 1500,
+    timerProgressBar: true,
+    didOpen: (toast) => {
+        // setShowModel(false);
+        toast.onmouseenter = Swal.stopTimer;
+        toast.onmouseleave = Swal.resumeTimer;
+    },
+    didClose:()=>{
+        // 
+    }
+});
 
 const DeleteUser: React.FC<DeleteProps> = ({editableUser, onHide, showBannUser}) => {
     const handleBannUser: FormEventHandler = (e) => {
         e.preventDefault();
-        const {data, setData, errors, put, reset, processing, recentlySuccessful} = useForm({
-            user: editableUser
-        });
-        onHide();
+        // router.post('/api/medewerkers/store', {
+        //     // title: data.title,
+        //     // name: data.first_name,
+        //     // last_name: data.last_name,
+        //     // email: data.email,
+        //     // phone_number: data.phone_number,
+        //   })
+        // router.on('success', (event) => {
+        //     // console.log(`Successfully made a visit to ${event.detail.page.url}`);
+        //     Toast.fire({
+        //         icon: "success",
+        //         text: "Employee added successfully",
+        //     });
+        //     // resetValues();
+        // })
+        // router.on('error', (errors) => {
+        //     console.log('errors')
+        // })
+
+        
     }
+
     return (
         <Modal show={showBannUser} onHide={onHide} size={"sm"}>
             <header>
-                <h2 className="text-lg font-medium text-gray-900 text-center py-3 px-2">Disabling
-                    User: {editableUser.name}</h2>
+                <h2 className="text-lg text-gray-900 text-center py-3 px-2">Disable User</h2>
             </header>
-            <h2 className="mt-1 text-sm text-gray-600 text-center">
-                Are you sure for get disable this user
-            </h2>
+            <div>
+                <p className='my-1 text-gray-800 ml-5'>Name : {editableUser.name}</p>
+                <p className='my-1 text-gray-800 ml-5'>Email : {editableUser.email}</p>
+                <p className='my-1 text-gray-800 ml-5'>Responsible Buildings Count : {editableUser.buildings?.length}</p>
+                <p className='my-1 text-gray-800 ml-5'>Responsible Customer Count : {editableUser.customers?.length}</p>
+                <p className='my-1 text-gray-800 ml-5'>Role : {editableUser.roleName}</p>
+            </div>
             <div className="flex items-center py-4 justify-content-between gap-8 centered">
 
                 <button className={'btn btn-lg btn-danger text-white'} onClick={handleBannUser}>
-                    Yes
+                    Delete
                 </button>
                 <button className={'btn btn-lg btn-secondary text-white'} onClick={onHide}>
-                    No
+                    Cancel
                 </button>
             </div>
         </Modal>
@@ -222,7 +260,7 @@ const AddUser: React.FC<addProps> = ({buildings, clients, showUserAdd, onHide}) 
             // Axios ile JSON formatında POST isteği yapıyoruz
             await axios.post('storenewuser', request)
                 .then(response => {
-                    console.log('User added successfully:', response.data);
+                    // console.log('User added successfully:', response.data);
                     window.location.reload();
                 })
                 .catch(err => {

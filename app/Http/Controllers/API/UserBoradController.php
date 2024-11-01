@@ -79,7 +79,7 @@ class UserBoradController extends Controller
         $clients = Customers::all();
         $buildings = Buildings::all();
         return Inertia::render('UsersManager', [
-            'kullanicilar' => $usersPrev,
+            'users' => $usersPrev,
             'clients' => $clients,
             'buildings' => $buildings
         ]);

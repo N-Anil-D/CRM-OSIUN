@@ -4,9 +4,9 @@ import {PageProps} from '@/types';
 import React, {useEffect, useState} from "react";
 import Sidebar, {MenuProps, SidebarDataProps} from "@/Layouts/Sidebar";
 import {PlusCircle} from 'react-feather';
-import {Table} from "antd";
+// import {Table} from "antd";
 import {AddUser, DeleteUser, UpUser} from "@/Layouts/AddUser"
-import {BuildingProps, CustomerProps, MedewerkerDataProps, TicketsDataProps} from "@/types/globalProps";
+import {BuildingProps, CustomerProps, TicketsDataProps} from "@/types/globalProps";
 import {User} from '@/types';
 import {ICellRendererParams, ColDef, ValueGetterParams} from 'ag-grid-community';
 import {AgGridReact} from "ag-grid-react";
@@ -17,42 +17,39 @@ import MenuItem from '@mui/material/MenuItem';
 import Swal from 'sweetalert2';
 
 interface dataProps extends PageProps {
-    kullanicilar: User[];
+    users: User[];
     clients: CustomerProps[];
     buildings: BuildingProps[];
 }
 
-interface Route {
-    userid: number;
-    page_name: string;
-    read: boolean;
-    write: boolean;
-    delete: boolean;
-}
+// interface Route {
+//     userid: number;
+//     page_name: string;
+//     read: boolean;
+//     write: boolean;
+//     delete: boolean;
+// }
 
-export default function UsersManager({auth, kullanicilar, clients, buildings}: dataProps) {
-    const thisUser = usePage<PageProps>().props.auth.user;
+export default function UsersManager({auth, users, clients, buildings}: dataProps) {
+    // const thisUser = usePage<PageProps>().props.auth.user;
     const [selectedTab, setSelectedTab] = useState<string>("rooms");
     const [showUserEdit, setShowUserEdit] = useState<boolean>(false);
     const [showAddUser, setShowAddUser] = useState<boolean>(false)
     const [editableUser, setEditableUser] = useState<User>(auth.user);
     const [showBannUser, setShowBannUser] = useState<boolean>(false);
-    const [routes, setRoutes] = useState<Route[]>([]);
+    // const [routes, setRoutes] = useState<Route[]>([]);
     
-    // const Toast = Swal.mixin({
-    //     toast: true,
-    //     position: "top-end",
-    //     showConfirmButton: false,
-    //     timer: 1500,
-    //     timerProgressBar: true,
-    //     didOpen: (toast) => {
-    //         toast.onmouseenter = Swal.stopTimer;
-    //         toast.onmouseleave = Swal.resumeTimer;
-    //     },
-    //     didClose:()=>{
-    //         // 
-    //     }
-    // });
+    const Toast = Swal.mixin({
+        toast: true,
+        position: "top-end",
+        showConfirmButton: false,
+        timer: 1500,
+        timerProgressBar: true,
+        didOpen: (toast) => {
+            toast.onmouseenter = Swal.stopTimer;
+            toast.onmouseleave = Swal.resumeTimer;
+        }
+    });
     
     useEffect(() => {
     }, []);
@@ -60,20 +57,21 @@ export default function UsersManager({auth, kullanicilar, clients, buildings}: d
         setSelectedTab(menu.menuValue.toLowerCase());
     };
     const handleDeleteClick = (userid: number) => {
-        const chosenUser = kullanicilar.find(z => z.id === userid) ?? auth.user
+        const chosenUser = users.find(z => z.id === userid) ?? auth.user
         setEditableUser(chosenUser);
-
+        
         if (auth.user === editableUser){
-            // Toast.fire({
-            //     icon: "error",
-            //     text: "UNAUTHORIZED",
-            // });
+            Toast.fire({
+                icon: "error",
+                text: "Unauthorized to delete this user!",
+            });
         }else {
             setShowBannUser(true);
+            
         }
     };
     const handleUpdateClick = (userid: number) => {
-        setEditableUser(kullanicilar.find(z => z.id === userid) ?? auth.user);
+        setEditableUser(users.find(z => z.id === userid) ?? auth.user);
         setShowUserEdit(true);
 
     };
@@ -229,16 +227,16 @@ export default function UsersManager({auth, kullanicilar, clients, buildings}: d
             SidebarData={[]} handleTabClick={handleTabClick}
         >
             <div className="page-wrapper">
-                <Head title="Users"/>
+                <Head title="User Panel"/>
                 <div className="content container-fluid">
                     <div className="row">
                         <div className="col">
                             <h3 className="page-title">
-                                User Managements
+                                User Management
                             </h3>
                             <ul className="breadcrumb">
                                 <li className="breadcrumb-item">
-                                    <Link href={route('dashboard')}>Dashboard</Link>
+                                    <Link href={route('dashboard')}><u>Dashboard</u></Link>
                                 </li>
                                 <li className="breadcrumb-item active">User Managements</li>
                             </ul>
@@ -258,7 +256,7 @@ export default function UsersManager({auth, kullanicilar, clients, buildings}: d
                                 <div className="ag-theme-quartz ag-theme-mycustomtheme">
                                     <AgGridReact<User>
                                         columnDefs={columns}
-                                        rowData={kullanicilar && kullanicilar.length > 0 ? kullanicilar : []}
+                                        rowData={users && users.length > 0 ? users : []}
                                         pagination={false}
                                         domLayout='autoHeight'
                                         onGridReady={(params) => params.api.sizeColumnsToFit()}

@@ -25,6 +25,7 @@ export function AddMedewerker({
     const treeMLater = new Date(today);
     treeMLater.setMonth(today.getMonth() + 3);
     const [selectedTitle, setSelectedTitle] = useState(titles[0]);
+    
     const Toast = Swal.mixin({
         toast: true,
         position: "top-end",
@@ -32,7 +33,6 @@ export function AddMedewerker({
         timer: 1500,
         timerProgressBar: true,
         didOpen: (toast) => {
-            setShowModel(false);
             toast.onmouseenter = Swal.stopTimer;
             toast.onmouseleave = Swal.resumeTimer;
         },
@@ -41,6 +41,7 @@ export function AddMedewerker({
         }
     });
 
+    
     const [data, setData] = useState<MedewerkerDataProps>({
         id: 0,
         title: titles[0].value,
@@ -114,10 +115,14 @@ export function AddMedewerker({
                 icon: "success",
                 text: "Employee added successfully",
             });
+            setShowModel(false);
             resetValues();
         })
         router.on('error', (errors) => {
-            console.log('errors')
+            Toast.fire({
+                icon: "error",
+                text: "Error!",
+            });
         })
     }
 

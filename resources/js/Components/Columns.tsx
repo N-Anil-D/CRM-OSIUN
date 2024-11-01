@@ -936,7 +936,6 @@ export function medewerkersColumnsCreator(
                         <p>{params.data.email}</p>
                     </a>
                 );
-
             },
             filter: true, floatingFilter: true
         },
@@ -985,48 +984,69 @@ export function medewerkersColumnsCreator(
             headerName: "Action",
             flex: 1,
             cellRenderer: (params: ICellRendererParams) => {
-                const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
-
-                const handleClick = (event: React.MouseEvent<HTMLElement>) => {
-                    setAnchorEl(event.currentTarget);
-                };
-
-                const handleClose = () => {
-                    setAnchorEl(null);
-                };
                 return (
-                    <>
-                        <IconButton onClick={handleClick}>
-                            <i className="material-icons">more_vert</i>
-                        </IconButton>
-                        <Menu
-                            anchorEl={anchorEl}
-                            open={Boolean(anchorEl)}
-                            onClose={handleClose}
-                            anchorOrigin={{
-                                vertical: 'top',
-                                horizontal: 'right',
-                            }}
-                            transformOrigin={{
-                                vertical: 'top',
-                                horizontal: 'right',
-                            }}
-                        >
-                            <MenuItem onClick={(e) => {
-                                e.preventDefault();
-                                handleUpdateClick(params.data.id);
-                            }}> <i className="fa fa-pencil m-r-5"/> Edit
-                            </MenuItem>
-                            <MenuItem onClick={(e) => {
-                                e.preventDefault();
-                                handleDeleteClick(params.data.id);
-                            }}><i className="fa fa-trash m-r-5"/> Delete
-                            </MenuItem>
-                        </Menu>
-                    </>
-                )
+                    <div>
+                        <span className="mx-2" onClick={(e) => {
+                            e.preventDefault();
+                            handleUpdateClick(params.data.id);
+                        }}>
+                            <i className="fa fa-pencil m-r-5"/>
+                        </span>
+                        
+                        <span className="mx-2" onClick={(e) => {
+                            e.preventDefault();
+                            handleDeleteClick(params.data.id);
+                        }}>
+                            <i className="fa fa-trash m-r-5"/>
+                        </span>
+                        
+                    </div>
+                );
             },
-            filter: false,
+
+            // cellRenderer: (params: ICellRendererParams) => {
+            //     const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
+
+            //     const handleClick = (event: React.MouseEvent<HTMLElement>) => {
+            //         setAnchorEl(event.currentTarget);
+            //     };
+
+            //     const handleClose = () => {
+            //         setAnchorEl(null);
+            //     };
+            //     return (
+            //         <>
+            //             <IconButton onClick={handleClick}>
+            //                 <i className="material-icons">more_vert</i>
+            //             </IconButton>
+            //             <Menu
+            //                 anchorEl={anchorEl}
+            //                 open={Boolean(anchorEl)}
+            //                 onClose={handleClose}
+            //                 anchorOrigin={{
+            //                     vertical: 'top',
+            //                     horizontal: 'right',
+            //                 }}
+            //                 transformOrigin={{
+            //                     vertical: 'top',
+            //                     horizontal: 'right',
+            //                 }}
+            //             >
+            //                 <MenuItem onClick={(e) => {
+            //                     e.preventDefault();
+            //                     handleUpdateClick(params.data.id);
+            //                 }}> <i className="fa fa-pencil m-r-5"/> Edit
+            //                 </MenuItem>
+            //                 <MenuItem onClick={(e) => {
+            //                     e.preventDefault();
+            //                     handleDeleteClick(params.data.id);
+            //                 }}><i className="fa fa-trash m-r-5"/> Delete
+            //                 </MenuItem>
+            //             </Menu>
+            //         </>
+            //     )
+            // },
+            // filter: false,
         },
     ];
     return columns;

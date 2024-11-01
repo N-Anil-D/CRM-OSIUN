@@ -1,0 +1,20 @@
+{
+	"folders": [
+		{
+			"name": "portal",
+			"path": "."
+		},
+		{
+			"name": "invamed",
+			"path": "../invamed"
+		},
+		{
+			"name": "NAD",
+			"path": "../NAD"
+		},
+		{
+			"name": "CRM-OSIUN",
+			"path": "../CRM-OSIUN"
+		}
+	]
+}

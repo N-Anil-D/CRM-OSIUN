@@ -32,22 +32,19 @@ class MedewerkersController extends Controller
         ]);
  
         if ($validator->fails()) {
-            dd('asdsad');
+            $validator->errors();
         }
  
         // Retrieve the validated input...
         $validated = $validator->validated();
-        // dd($validated,$validated['name']);
 
         try {
-            $lastID = medewerkers::get()->last()->id;
             $newMedewerker = new medewerkers;
             $newMedewerker->title = $validated['title'];
             $newMedewerker->first_name = $validated['name'];
             $newMedewerker->last_name = $validated['last_name'];
             $newMedewerker->email = $validated['email'];
             $newMedewerker->phone_number = $validated['phone_number'];
-            $newMedewerker->personnel_number = $lastID++;
             $newMedewerker->save();
 
             return redirect()->route('medewerkers');
@@ -69,7 +66,6 @@ class MedewerkersController extends Controller
                 // 'employment_type' => $validated['employment_type'],
                 // 'contract_type' => $validated['contract_type'],
                 // 'proeftijd' => Carbon::parse($validated['proeftijd'])->format('Y-m-d H:i:s'),
-                // 'personnel_number' => 0,
                 // 'iban_number' => $validated['iban_number'],
                 // 'start_date' => Carbon::parse($validated['start_date'])->format('Y-m-d H:i:s'),
                 // 'travel_allowance' => $validated['travel_allowance'],
@@ -82,7 +78,7 @@ class MedewerkersController extends Controller
                 // 'bonus_amount' => $validated['bonus_amount']
             // ]);
             // $medewerkers = Medewerkers::all();
-            // return Inertia::render('Medewerkers', ['medewerkers' => $medewerkers,'notification' => true]);
+            // return Inertia::render('Medewerkers', ['medewerkers' => $medewerkers]);
         } catch (Exception $exception) {
             // return response()->json($exception->getMessage(), 500);
             // return redirect()->back();
@@ -151,6 +147,28 @@ class MedewerkersController extends Controller
         } catch (\Exception $e) {
             return response()->json(['error' => 'An unexpected error occurred: ' . $e->getMessage()], 500);
         }
+    }
+
+    public function delete($id)
+    {
+        $validator = Validator::make(['employeeID' =>$id], [
+            'employeeID' => 'required|numeric',
+        ]);
+        if ($validator->fails()){
+            
+        }
+
+        $medewerker = medewerkers::find($id);
+        if ($medewerker) {
+            $medewerker->delete();
+            return redirect()->route('medewerkers');
+        }else {
+            return redirect()->route('medewerkers')->with('error');
+        }
+
+        // $medewerkers = Medewerkers::get();
+        // return Inertia::render('Medewerkers', ['medewerkers' => $medewerkers]);
+
     }
 
     // private function getUserWithPermissions(int $userId)
