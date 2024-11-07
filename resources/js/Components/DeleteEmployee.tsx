@@ -53,9 +53,6 @@ const DeleteEmployee: React.FC<DeleteProps> = ({deleteEmployee, onHide, showBann
             <div>
                 <p className='my-1 text-gray-800 ml-5'>Name : {deleteEmployee.first_name + ' ' + deleteEmployee.last_name}</p>
                 <p className='my-1 text-gray-800 ml-5'>Email : {deleteEmployee.email}</p>
-                {/* <p className='my-1 text-gray-800 ml-5'>Responsible Buildings Count : {deleteEmployee.buildings?.length}</p>
-                <p className='my-1 text-gray-800 ml-5'>Responsible Customer Count : {deleteEmployee.customers?.length}</p>
-                <p className='my-1 text-gray-800 ml-5'>Role : {deleteEmployee.roleName}</p> */}
             </div>
             <div className="flex items-center py-4 justify-content-between gap-8 centered">
 

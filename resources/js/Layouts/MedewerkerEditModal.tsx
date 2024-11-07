@@ -1,30 +1,44 @@
-import { router } from '@inertiajs/react';
+import { router, useForm } from '@inertiajs/react';
 import Swal from 'sweetalert2';
-import React, {useState, PropsWithChildren} from "react";
+import React, {useState, useEffect, PropsWithChildren} from "react";
 import {Modal} from "react-bootstrap";
 import {XCircle, Phone } from "react-feather";
 import { MedewerkerDataProps } from "@/types/globalProps";
 import Select from "react-select";
 
-export function AddMedewerker({
+
+export function MedewerkerEditModal({
         showModel,
         setShowModel,
-        }:
-        PropsWithChildren<{
+        moduleData,
+    }: PropsWithChildren<{
             showModel: boolean,
             setShowModel: React.Dispatch<React.SetStateAction<boolean>>,
             onHide: (e: MedewerkerDataProps, edited: boolean) => void,
+            moduleData?: MedewerkerDataProps | any,
         }>
     ){
-
-        const titles: { value: string, label: string }[] = [
+    const [title,           set_title] = useState<any>();
+    const [first_name,      set_first_name] = useState('');
+    const [last_name,       set_last_name] = useState('');
+    const [email,           set_email] = useState('');
+    const [phone_number,    set_phone_number] = useState('');
+    const titles: { value: string, label: string }[] = [
         {value: 'De heer', label: 'De heer'},
         {value: 'Mevrouw', label: 'Mevrouw'},
         {value: 'Crediteurenadministratie', label: 'Crediteurenadministratie'},
         {value: 'Heer', label: 'Heer'}
     ];
-    const [selectedTitle, setSelectedTitle] = useState(titles[0]);
-    
+    let selectedTitleIndex = titles.findIndex(item => item.value === moduleData?.title);
+    let titleValue = titles[selectedTitleIndex];
+    useEffect(() => {
+        set_title(titleValue)
+        set_first_name(moduleData?.first_name)
+        set_last_name(moduleData?.last_name)
+        set_email(moduleData?.email)
+        set_phone_number(moduleData?.phone_number)
+    }, [moduleData]);
+
     const Toast = Swal.mixin({
         toast: true,
         position: "top-end",
@@ -36,84 +50,27 @@ export function AddMedewerker({
             toast.onmouseleave = Swal.resumeTimer;
         },
         didClose:()=>{
-            //
+            // 
         }
     });
-
-    
-    const [data, setData] = useState<MedewerkerDataProps>({
-        id: 0,
-        title: titles[0].value,
-        first_name: '',
-        last_name: '',
-        email: '',
-        phone_number: '',
-        gender: '',
-        address: '',
-        house_number: '',
-        postal_code: '',
-        residence: '',
-        date_of_birth: new Date,
-        employment_type: '',
-        iban_number: '',
-        start_date: new Date(),
-        travel_allowance: '',
-        hourly_rate: 0,
-        rights: '',
-        contract_hours: '',
-        bsn_number: '',
-        travel_expenses: 0,
-        bonus_amount: 0,
-        passive: true,
-        created_at: new Date(),
-    })
-
-    const resetValues = ()=>{
-        data.id= 0;
-        data.title= titles[0].value;
-        data.first_name= '';
-        data.last_name= '';
-        data.email= '';
-        data.phone_number= '';
-        data.gender= '';
-        data.address= '';
-        data.house_number= '';
-        data.postal_code= '';
-        data.residence= '';
-        data.date_of_birth= new Date;
-        data.employment_type= '';
-        data.iban_number= '';
-        data.start_date= new Date();
-        data.travel_allowance= '';
-        data.hourly_rate= 0;
-        data.rights= '';
-        data.contract_hours= '';
-        data.bsn_number= '';
-        data.travel_expenses= 0;
-        data.bonus_amount= 0;
-        data.passive= true;
-        data.created_at= new Date();
-
-    }
     
     const save = (event: any) => {
         event.preventDefault();
-        router.post('/medewerkers/store', {
-            // _token: props.csrf_token,
-            title: data.title,
-            first_name: data.first_name,
-            last_name: data.last_name,
-            email: data.email,
-            phone_number: data.phone_number,
-          })
+        
+        router.post('/medewerkers/update', {
+            id              : moduleData?.id,
+            title           : title,
+            first_name      : first_name,
+            last_name       : last_name,
+            email           : email,
+            phone_number    : phone_number,
+        })
         router.on('success', (event) => {
-            // console.log(`Successfully made a visit to ${event.detail.page.url}`);
             Toast.fire({
                 icon: "success",
-                text: "Employee added successfully",
+                text: "Employee edited successfully",
             });
             setShowModel(false);
-            resetValues();
         })
         router.on('error', (errors) => {
             Toast.fire({
@@ -121,6 +78,7 @@ export function AddMedewerker({
                 text: "Error!",
             });
         })
+
     }
 
     return (
@@ -128,7 +86,7 @@ export function AddMedewerker({
             <div className="modal-dialog-centered modal-lg" role={'document'}>
                 <div className="modal-content">
                     <div className="modal-header">
-                        <h6 className="modal-title">New Employee
+                        <h6 className="modal-title">Edit Employee - id : {moduleData?.id}
                         </h6>
                         <button
                             type="button"
@@ -151,27 +109,20 @@ export function AddMedewerker({
                                                     <label className="col-form-label">Title</label>
                                                     <Select
                                                         id={'titleSelect'}
-                                                        defaultValue={selectedTitle}
-                                                        placeholder={'Selecteer'}
+                                                        value={title}
                                                         options={titles}
-                                                        onChange={(e: any) => {
-                                                            if (e) {
-                                                                setSelectedTitle(e);
-                                                                setData(prev => ({...prev, title: e.value}))
-                                                            }
-                                                        }}
+                                                        onChange={e => set_title(e)}
                                                     />
                                                 </div>
                                             </div>
                                             <div className="col-md-3">
                                                 <div className="input-block mb-1">
                                                     <label className="col-form-label">Name</label>
-                                                    <input
-                                                        type="text" className="form-control"
-                                                        defaultValue={data.first_name}
-                                                        onChange={(e) => {
-                                                            setData(prev => ({...prev, first_name: e.target.value}))
-                                                        }}/>
+
+                                                    <input type="text" className="form-control" 
+                                                        defaultValue={first_name}
+                                                        onChange={e => set_first_name(e.target.value)}
+                                                    />
                                                 </div>
                                             </div>
                                             <div className="col-md-3">
@@ -179,11 +130,10 @@ export function AddMedewerker({
                                                 <div
                                                     className="input-block mb-1">
                                                     <label className="col-form-label">Surname</label>
-                                                    <input type="text" className="form-control"
-                                                           defaultValue={data.last_name}
-                                                           onChange={(e) => {
-                                                               setData(prev => ({...prev, last_name: e.target.value}))
-                                                           }}/>
+                                                    <input type="text" className="form-control" 
+                                                        defaultValue={last_name}
+                                                        onChange={e => set_last_name(e.target.value)}
+                                                    />
                                                 </div>
                                             </div>
                                         </div>
@@ -191,11 +141,10 @@ export function AddMedewerker({
                                             <div className="col-md-6">
                                                 <div className="input-block mb-1">
                                                     <label className="col-form-label">E-mail</label>
-                                                    <input type="email" className="form-control"
-                                                           defaultValue={data.email}
-                                                           onChange={(e) => {
-                                                               setData(prev => ({...prev, email: e.target.value}))
-                                                           }}/>
+                                                    <input type="email" className="form-control" 
+                                                        defaultValue={email}
+                                                        onChange={e => set_email(e.target.value)}
+                                                    />
                                                 </div>
                                             </div>
                                             <div className="col-md-6">
@@ -208,13 +157,10 @@ export function AddMedewerker({
                                                             <Phone size={20}/>
                                                         </span>
                                                         <div className="col-lg-10">
-                                                            <input type="number" className="form-control-sm col-md-12"
-                                                                   defaultValue={data.phone_number} onChange={(e) => {
-                                                                setData(prev => ({
-                                                                    ...prev,
-                                                                    phone_number: e.target.value
-                                                                }))
-                                                            }}/>
+                                                            <input type="number" className="form-control-sm col-md-12" 
+                                                                defaultValue={phone_number}
+                                                                onChange={e => set_phone_number(e.target.value)}
+                                                            />
                                                         </div>
                                                     </div>
                                                 </div>

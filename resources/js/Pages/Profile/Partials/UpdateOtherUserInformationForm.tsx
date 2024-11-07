@@ -237,9 +237,7 @@ export default function UpdateOtherUserInformation({
             <header>
                 <h2 className="text-lg font-medium text-gray-900 ">Profile Information</h2>
 
-                <p className="mt-1 text-sm text-gray-600">
-                    Update your account's profile information and email address.
-                </p>
+                <p className="mt-1 text-sm text-gray-600">Update your account's profile information and email address.</p>
             </header>
 
             <form onSubmit={submit} className="centered col-12">
@@ -247,8 +245,9 @@ export default function UpdateOtherUserInformation({
                     <div className="row">
                         <div className="col-sm-6">
                             <div className="input-block mb-3">
-                                <label className="col-form-label">User Name <span
-                                    className="text-danger">*</span></label>
+                                <label className="col-form-label">
+                                    User Name <span className="text-danger">*</span>
+                                </label>
                                 <input type="text"
                                        className="form-control"
                                        onChange={NewUserSendChange}

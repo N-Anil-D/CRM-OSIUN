@@ -1,15 +1,13 @@
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
 import {Head, Link, useForm, usePage} from '@inertiajs/react';
-import {PageProps} from '@/types';
 import React, {useEffect, useState} from "react";
-import Sidebar, {MenuProps, SidebarDataProps} from "@/Layouts/Sidebar";
 import {PlusCircle} from 'react-feather';
-// import {Table} from "antd";
+import {AgGridReact} from "ag-grid-react";
+import {PageProps,User} from '@/types';
+import Sidebar, {MenuProps, SidebarDataProps} from "@/Layouts/Sidebar";
 import {AddUser, DeleteUser, UpUser} from "@/Layouts/AddUser"
 import {BuildingProps, CustomerProps, TicketsDataProps} from "@/types/globalProps";
-import {User} from '@/types';
 import {ICellRendererParams, ColDef, ValueGetterParams} from 'ag-grid-community';
-import {AgGridReact} from "ag-grid-react";
 import 'bootstrap/dist/js/bootstrap.bundle.min.js';
 import IconButton from '@mui/material/IconButton';
 import Menu from '@mui/material/Menu';
@@ -51,15 +49,14 @@ export default function UsersManager({auth, users, clients, buildings}: dataProp
         }
     });
     
-    useEffect(() => {
-    }, []);
+    // useEffect(() => {
+    // }, []);
     const handleTabClick = (menu: MenuProps) => {
         setSelectedTab(menu.menuValue.toLowerCase());
     };
     const handleDeleteClick = (userid: number) => {
         const chosenUser = users.find(z => z.id === userid) ?? auth.user
         setEditableUser(chosenUser);
-        
         if (auth.user === editableUser){
             Toast.fire({
                 icon: "error",
@@ -67,14 +64,13 @@ export default function UsersManager({auth, users, clients, buildings}: dataProp
             });
         }else {
             setShowBannUser(true);
-            
         }
     };
     const handleUpdateClick = (userid: number) => {
         setEditableUser(users.find(z => z.id === userid) ?? auth.user);
         setShowUserEdit(true);
-
     };
+    
     const ActionMenu = ({data}: { data: any }) => {
         const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
 
@@ -117,12 +113,14 @@ export default function UsersManager({auth, users, clients, buildings}: dataProp
             </>
         );
     };
-    const roles = [
-        {value: 'Client', label: 'Klant'},
-        {value: 'personel', label: 'Medewerker'},
-        {value: 'forman', label: 'Voorwerker'},
-        {value: 'projectleider', label: 'Projectleider'},
-        {value: 'admin', label: 'Admin'},]
+    // const roles = [
+    //     {value: 'Client', label: 'Klant'},
+    //     {value: 'personel', label: 'Medewerker'},
+    //     {value: 'forman', label: 'Voorwerker'},
+    //     {value: 'projectleider', label: 'Projectleider'},
+    //     {value: 'admin', label: 'Admin'},
+    // ]
+
     const columns: ColDef[] = [
         {
             headerName: "User Id",

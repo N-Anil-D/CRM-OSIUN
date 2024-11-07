@@ -903,10 +903,10 @@ export function medewerkersColumnsCreator(
             headerName: "ID",
             flex: 1,
             valueGetter: (params: ValueGetterParams) => {
-                return `${params.data.personnel_number}`;
+                return `${params.data.id}`;
             },
             cellRenderer: (params: ICellRendererParams) => {
-                return (<b>{params.data.personnel_number}</b>)
+                return (<b>{params.data.id}</b>)
             },
             filter: true, floatingFilter: true
         },

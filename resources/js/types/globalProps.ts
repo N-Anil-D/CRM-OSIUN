@@ -273,7 +273,6 @@ interface MedewerkerDataProps {
     employment_type: string;
     contract_type?: string;
     proeftijd?: Date;
-    personnel_number: number;
     iban_number: string;
     start_date: Date;
     travel_allowance: string;

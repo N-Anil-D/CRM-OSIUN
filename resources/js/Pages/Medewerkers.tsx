@@ -1,15 +1,17 @@
-import {Head, usePage} from "@inertiajs/react";
+import {Head, router} from "@inertiajs/react";
 import React, {useState, useEffect} from 'react';
 import {PageProps, User} from '@/types';
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
 import { MedewerkerDataProps } from "@/types/globalProps";
 import "primereact/resources/themes/nano/theme.css";
 import {AddMedewerker} from '@/Layouts/MedewerkerModal';
+import {MedewerkerEditModal} from '@/Layouts/MedewerkerEditModal';
 import {AgGridReact} from 'ag-grid-react';
 import 'ag-grid-community/styles/ag-theme-quartz.css';
 import {medewerkersColumnsCreator} from "@/Components/Columns";
 import Swal from 'sweetalert2';
 import {DeleteEmployee} from "@/Components/DeleteEmployee";
+import { log } from "console";
 
 
 interface MedewekersProps extends PageProps {
@@ -17,20 +19,18 @@ interface MedewekersProps extends PageProps {
 }
 
 export default function Medewekers({auth, medewerkers}: MedewekersProps) {
-    const [isSidebarExpanded, setSidebarExpanded] = useState<boolean>(false);
-    const [showUserEdit, setShowUserEdit] = useState<boolean>(false);
-    const [domMedewerkers, setDomMedewerkers] = useState<MedewerkerDataProps[]>();
-        const [editableUser, setEditableUser] = useState<MedewerkerDataProps | undefined>();
-        const [showBannUser, setShowBannUser] = useState<boolean>(false);
-    // const [deleteUser, setDeleteUser] = useState<MedewerkerDataProps | Array>(medewerkers);
-    const [deleteUser, setDeleteUser] = useState<MedewerkerDataProps | Array>(medewerkers);
-    const [loading, setLoading] = useState<boolean>(true);
+    const [isSidebarExpanded,   setSidebarExpanded  ] = useState<boolean>(false);
+    const [showUserEdit,        setShowUserAdd      ] = useState<boolean>(false);
+    const [editableUser,        setEditableUser     ] = useState<MedewerkerDataProps | any>();
+    const [showBannUser,        setShowBannUser     ] = useState<boolean>(false);
+    const [editEmployeeModal,   setEditEmployeeModal] = useState<boolean>(false);
+    const [deleteUser,          setDeleteUser       ] = useState<MedewerkerDataProps | any>(medewerkers);
+    const [loading,             setLoading          ] = useState<boolean>(true);
 
     const [filterForNaams, setFilterForNaams] = useState<any[]>(medewerkers.map(x => ({
         value: x.id,
         label: x.first_name
     })));
-    
     const Toast = Swal.mixin({
         toast: true,
         position: "top-end",
@@ -38,7 +38,6 @@ export default function Medewekers({auth, medewerkers}: MedewekersProps) {
         timer: 1500,
         timerProgressBar: true,
         didOpen: (toast) => {
-            // setShowModel(false);
             toast.onmouseenter = Swal.stopTimer;
             toast.onmouseleave = Swal.resumeTimer;
         },
@@ -48,43 +47,21 @@ export default function Medewekers({auth, medewerkers}: MedewekersProps) {
     });
 
     useEffect(() => {
-        if (medewerkers && medewerkers.length > 0) {
-            setDomMedewerkers(medewerkers);
+        if (medewerkers.length > 0) {
             setLoading(false);
-            if (domMedewerkers)
-                setFilterForNaams(domMedewerkers.map(x => ({value: x.id, label: x.first_name})))
+            if (medewerkers){
+                setFilterForNaams(medewerkers.map(x => ({value: x.id, label: x.first_name})))
+            }
         }
     }, [medewerkers]);
-    const addMedewerkerPersonOnHide = (e: MedewerkerDataProps, isEdit: boolean) => {
-        if (e.id != 0 && !isEdit) {
-            setDomMedewerkers(prevState => {
-                if (!prevState) return [e];
-                return [...prevState, e];
-            });
-        } else if (e.id != 0 && isEdit && domMedewerkers) {
-            let data = domMedewerkers.map(persona => {
-                if (persona.id == e.id) {
-                    return {...persona, ...e};
-                }
-                return persona;
-            })
-            setDomMedewerkers(data);
-        }
-        setShowUserEdit(false);
-    }
-    const handleTabClick = () => {
 
-    }
-    const notificationDataHandler = () => {
+    const handleTabClick = () => {}
+    const notificationDataHandler = () => {}
 
-    }
-    const handleMedewerkerUpdateClick = (personID: number) => {
-        if (domMedewerkers) {
-            let data = domMedewerkers.find(x => x.id == personID);
-            if (data)
-                setEditableUser(data);
-            setShowUserEdit(true);
-        }
+    const handleMedewerkerUpdateClick = (id: number) => {
+        let chosenUser = medewerkers?.find(z => z.id === id)
+        setEditableUser(chosenUser);
+        setEditEmployeeModal(true);
     }
     const handleMedewerkerDeleteClick = (id: number) => {
         let chosenUser = medewerkers.find(z => z.id === id)
@@ -92,7 +69,7 @@ export default function Medewekers({auth, medewerkers}: MedewekersProps) {
         setShowBannUser(true);
     };
 
-    const [medewerkersTableColumns] = useState(medewerkersColumnsCreator(handleMedewerkerDeleteClick, handleMedewerkerUpdateClick));
+    const medewerkersTableColumns = medewerkersColumnsCreator(handleMedewerkerDeleteClick, handleMedewerkerUpdateClick);
     
     return (
         <AuthenticatedLayout user={auth.user}
@@ -114,7 +91,7 @@ export default function Medewekers({auth, medewerkers}: MedewekersProps) {
                                 <li>
                                     <a className="btn btn-purple text-white" onClick={() => {
                                         setEditableUser(undefined);
-                                        setShowUserEdit(true);
+                                        setShowUserAdd(true);
                                     }}><i
                                     className="las la-plus-circle me-1"
                                     />Add Employee</a>
@@ -131,8 +108,9 @@ export default function Medewekers({auth, medewerkers}: MedewekersProps) {
                                                 <div className="col-12">
                                                     <div className="ag-theme-quartz ag-theme-mycustomtheme">
                                                         <AgGridReact<MedewerkerDataProps>
+                                                            key={medewerkers.length}
                                                             columnDefs={medewerkersTableColumns}
-                                                            rowData={domMedewerkers}
+                                                            rowData={[...medewerkers]}
                                                             pagination={true}
                                                             domLayout='autoHeight'
                                                             onGridReady={(params) => params.api.sizeColumnsToFit()}
@@ -147,9 +125,14 @@ export default function Medewekers({auth, medewerkers}: MedewekersProps) {
                         </div>
                     </div>
                 </div>
-            <AddMedewerker onHide={addMedewerkerPersonOnHide} showModel={showUserEdit} setShowModel={setShowUserEdit} editPerson={editableUser}/>
-            <DeleteEmployee showBannUser={showBannUser} onHide={() => setShowBannUser(false)} deleteEmployee={deleteUser}/>
-
+            <AddMedewerker onHide={() => setShowUserAdd(false)} showModel={showUserEdit} setShowModel={setShowUserAdd}/>
+            <MedewerkerEditModal onHide={() => setEditEmployeeModal(false)} showModel={editEmployeeModal} setShowModel={setEditEmployeeModal} moduleData={editableUser}/>
+            {/* {editableUser !== undefined ?
+                <MedewerkerEditModal onHide={() => setEditEmployeeModal(false)} showModel={editEmployeeModal} setShowModel={setEditEmployeeModal} moduleData={editableUser}/>
+                :
+                null
+            } */}
+            <DeleteEmployee onHide={() => setShowBannUser(false)} showBannUser={showBannUser} deleteEmployee={deleteUser}/>
         </AuthenticatedLayout>
     )
 }
