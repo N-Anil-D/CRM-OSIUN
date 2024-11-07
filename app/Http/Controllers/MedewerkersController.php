@@ -54,7 +54,7 @@ class MedewerkersController extends Controller
     {
         $validator = Validator::make($request->all(), [
             'id' => 'required|numeric',
-            'title' => 'required|array:value,label',
+            'title' => 'required|string',
             'first_name' => 'required|min:3|string',
             'last_name' => 'required|min:3|string',
             'email' => 'required|email',
@@ -69,7 +69,7 @@ class MedewerkersController extends Controller
         $employee = medewerkers::find($validated['id']);
 
         try {
-            $employee->title = $validated['title']['value'];
+            $employee->title = $validated['title'];
             $employee->first_name = $validated['first_name'];
             $employee->last_name = $validated['last_name'];
             $employee->email = $validated['email'];

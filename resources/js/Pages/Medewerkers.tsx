@@ -127,11 +127,6 @@ export default function Medewekers({auth, medewerkers}: MedewekersProps) {
                 </div>
             <AddMedewerker onHide={() => setShowUserAdd(false)} showModel={showUserEdit} setShowModel={setShowUserAdd}/>
             <MedewerkerEditModal onHide={() => setEditEmployeeModal(false)} showModel={editEmployeeModal} setShowModel={setEditEmployeeModal} moduleData={editableUser}/>
-            {/* {editableUser !== undefined ?
-                <MedewerkerEditModal onHide={() => setEditEmployeeModal(false)} showModel={editEmployeeModal} setShowModel={setEditEmployeeModal} moduleData={editableUser}/>
-                :
-                null
-            } */}
             <DeleteEmployee onHide={() => setShowBannUser(false)} showBannUser={showBannUser} deleteEmployee={deleteUser}/>
         </AuthenticatedLayout>
     )
