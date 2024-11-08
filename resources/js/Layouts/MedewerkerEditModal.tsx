@@ -1,4 +1,4 @@
-import { router, useForm } from '@inertiajs/react';
+import { router } from '@inertiajs/react';
 import Swal from 'sweetalert2';
 import React, { useState, useEffect, PropsWithChildren } from "react";
 import { Modal } from "react-bootstrap";
@@ -93,7 +93,7 @@ export function MedewerkerEditModal({
             <div className="modal-dialog-centered modal-lg">
                 <div className="modal-content">
                     <div className="modal-header">
-                        <h6 className="modal-title">Edit Employee - id : {moduleData?.id}</h6>
+                        <h6 className="modal-title">Edit Employee</h6>
                         <button type="button" className="btn-close" onClick={() => setShowModel(false)}>
                             <XCircle className={'text-red-700'} size={20} />
                         </button>

@@ -1,17 +1,16 @@
+import {PageProps} from '@/types';
+import Swal from 'sweetalert2';
 import {Head, router} from "@inertiajs/react";
 import React, {useState, useEffect} from 'react';
-import {PageProps, User} from '@/types';
-import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
 import { MedewerkerDataProps } from "@/types/globalProps";
+import {AgGridReact} from 'ag-grid-react';
 import "primereact/resources/themes/nano/theme.css";
+import 'ag-grid-community/styles/ag-theme-quartz.css';
+import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
 import {AddMedewerker} from '@/Layouts/MedewerkerModal';
 import {MedewerkerEditModal} from '@/Layouts/MedewerkerEditModal';
-import {AgGridReact} from 'ag-grid-react';
-import 'ag-grid-community/styles/ag-theme-quartz.css';
 import {medewerkersColumnsCreator} from "@/Components/Columns";
-import Swal from 'sweetalert2';
 import {DeleteEmployee} from "@/Components/DeleteEmployee";
-import { log } from "console";
 
 
 interface MedewekersProps extends PageProps {

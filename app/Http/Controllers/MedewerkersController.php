@@ -52,34 +52,146 @@ class MedewerkersController extends Controller
 
     public function update(Request $request)
     {
-        $validator = Validator::make($request->all(), [
-            'id' => 'required|numeric',
-            'title' => 'required|string',
-            'first_name' => 'required|min:3|string',
-            'last_name' => 'required|min:3|string',
-            'email' => 'required|email',
-            'phone_number' => 'required|numeric',
-        ]);
- 
-        if ($validator->fails()) {
-            $validator->errors();
-        }
-        $validated = $validator->validated();
+        if ($request->tab_one) {
+            $validator = Validator::make($request->all(), [
+                'id' => 'required|numeric',
+                'Rijbewijsnummer' => 'string', // rijbewijsnummer ?
+                'Afgegeven_op' => 'string', // rij_afgegeven_op ?
+                'Gedlig_tot' => 'string', // rij_gedlig_tot ?
+                'Adres' => 'string', // address
+                'Postcode' => 'string', // postal_code
+                'Woonplaats' => 'string', // residence
+                'Huisnummer' => 'string', // house_number
+                // 'proeftijd' => 'datetime', // proeftijd
+            ]);
+                
+            if ($validator->fails()) {
+                $validator->errors();
+            }
+            $validated = $validator->validated();
 
-        $employee = medewerkers::find($validated['id']);
-
-        try {
-            $employee->title = $validated['title'];
-            $employee->first_name = $validated['first_name'];
-            $employee->last_name = $validated['last_name'];
-            $employee->email = $validated['email'];
-            $employee->phone_number = $validated['phone_number'];
+            $employee = medewerkers::find($validated['id']);
+            $employee->address = $validated['Adres'];
+            $employee->postal_code = $validated['Postcode'];
+            $employee->residence = $validated['Woonplaats'];
+            $employee->house_number = $validated['Huisnummer'];
+            // $employee->proeftijd = $validated['proeftijd'];
             $employee->save();
-        } catch (\Throwable $th) {
-            //throw $th;
+            try {
+            } catch (\Throwable $th) {
+                //throw $th;
+            }
+            return redirect()->route('medewerker', ['id' => $validated['id']]);
+
+        }elseif ($request->tab_two) {
+            $validator = Validator::make($request->all(), [
+                'id' => 'required|numeric',
+                'iban_number' => 'string',
+                'bsn_number' => 'string',
+                'hourly_rate' => 'string',
+                'travel_allowance' => 'string', 
+                'travel_expenses' => 'string', 
+                // 'bonus_amount' => 'string', 
+            ]);
+                
+            if ($validator->fails()) {
+                $validator->errors();
+            }
+            $validated = $validator->validated();
+
+            $employee = medewerkers::find($validated['id']);
+            $employee->iban_number = $validated['iban_number'];
+            $employee->bsn_number = $validated['bsn_number'];
+            $employee->hourly_rate = $validated['hourly_rate'];
+            $employee->travel_allowance = $validated['travel_allowance'];
+            $employee->travel_expenses = $validated['travel_expenses'];
+            // $employee->bonus_amount = $validated['bonus_amount'];
+            $employee->save();
+            try {
+            } catch (\Throwable $th) {
+                //throw $th;
+            }
+            return redirect()->route('medewerker', ['id' => $validated['id']]);
+
+        }elseif ($request->tab_three) {
+            $validator = Validator::make($request->all(), [
+                'id' => 'required|numeric',
+                'contracttype' => 'string',
+                'contracturen' => 'string',
+                // 'contract_starten' => 'string',
+                // 'einde_contract' => 'string',
+                // 'Registratiedatum' => 'string',
+            ]);
+                
+            if ($validator->fails()) {
+                $validator->errors();
+            }
+            $validated = $validator->validated();
+
+            $employee = medewerkers::find($validated['id']);
+            $employee->contract_type = $validated['contracttype'];
+            $employee->contract_hours = $validated['contracturen'];
+            // $employee->start_date = $validated['hourly_rate'];
+            // $employee->end_date = $validated['travel_allowance'];
+            // $employee->created_at = $validated['travel_expenses'];
+            $employee->save();
+            try {
+            } catch (\Throwable $th) {
+                //throw $th;
+            }
+            return redirect()->route('medewerker', ['id' => $validated['id']]);
+
+        }elseif ($request->tab_four) {
+            $validator = Validator::make($request->all(), [
+                'id' => 'required|numeric',
+                'rights' => 'string|max:50',
+            ]);
+                
+            if ($validator->fails()) {
+                $validator->errors();
+            }
+            $validated = $validator->validated();
+
+            $employee = medewerkers::find($validated['id']);
+            $employee->rights = $validated['rights'];
+            $employee->save();
+            try {
+            } catch (\Throwable $th) {
+                //throw $th;
+            }
+            return redirect()->route('medewerker', ['id' => $validated['id']]);
+
+        }else{
+            $validator = Validator::make($request->all(), [
+                'id' => 'required|numeric',
+                'title' => 'required|string',
+                'first_name' => 'required|min:3|string',
+                'last_name' => 'required|min:3|string',
+                'email' => 'required|email',
+                'phone_number' => 'required|numeric',
+            ]);
+    
+            if ($validator->fails()) {
+                $validator->errors();
+            }
+            $validated = $validator->validated();
+
+            $employee = medewerkers::find($validated['id']);
+
+            try {
+                $employee->title = $validated['title'];
+                $employee->first_name = $validated['first_name'];
+                $employee->last_name = $validated['last_name'];
+                $employee->email = $validated['email'];
+                $employee->phone_number = $validated['phone_number'];
+                $employee->save();
+            } catch (\Throwable $th) {
+                //throw $th;
+            }
+
+            return redirect()->route('medewerkers');
         }
 
-        return redirect()->route('medewerkers');
     }
 
     public function detailindex($id)
@@ -114,42 +226,5 @@ class MedewerkersController extends Controller
             return redirect()->route('medewerkers')->with('error');
         }
     }
-
-    // private function getUserWithPermissions(int $userId)
-    // {
-    //     $user = User::where('id', $userId)->firstOrFail();
-
-    //     // Kullanıcının rollerini ve yetkilerini al
-    //     $permissions = user_page_auth::where('userid', $user->id)->whereNull('parent_id')->with('children')->get();
-
-    //     $buildingsQuery = Buildings::query();
-    //     if ($user->connectedBuild !== 'ALL') {
-    //         // Kullanıcı yetkili olduğu bina verilerine erişmek istiyor
-    //         $buildingsQuery->join('user_auth_buildings', 'buildings.id', '=', 'user_auth_buildings.buildid')
-    //             ->where('user_auth_buildings.userid', $user->id);
-    //     }
-    //     $buildings = $buildingsQuery->select('buildings.*')->get();
-    //     $customerQuery = Customers::query();
-    //     if ($user->connectedCustomer !== 'ALL') {
-    //         $customerQuery->join('user_auth_customer', 'customers.CustomerID', '=', 'user_auth_customer.customerid')
-    //             ->where('user_auth_customer.userid', $user->id);
-    //     }
-    //     $customers = $customerQuery->select('customers.*')->get();
-    //     // Kullanıcıyı yönlendir
-    //     return [
-    //         'id' => $user->id,
-    //         'name' => $user->name,
-    //         'email' => $user->email,
-    //         'email_verified_at' => $user->email_verified_at,
-    //         'roleName' => $user->roleName,
-    //         'connectedBuild' => $user->connectedBuild,
-    //         'connectedCustomer' => $user->connectedCustomer,
-    //         'bann' => $user->bann,
-    //         'profile_image_path' => $user->profile_image_path,
-    //         'permissions' => $permissions,
-    //         'customers' => $customers,
-    //         'buildings' => $buildings,
-    //     ];
-    // }
 
 }
